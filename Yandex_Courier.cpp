@@ -1,12 +1,10 @@
 #include <iostream>
-#include <fstream>
+#include <algorithm>
 
 using std::cin;
 using std::cout;
 using std::endl;
 using std::max;
-using std::ofstream;
-using std::ifstream;
 
 const int number_of_dividers[1001] = {0, 1, 2, 2, 3, 2, 4, 2, 4, 3, 4, 2, 6, 2, 4, 4, 5, 2, 6, 2, 6, 4, 4, 2, 8, 3, 4, 4, 6, 2, 8, 2, 6, 4, 4, 4, 9, 2, 4, 4, 8, 2, 8, 2, 6, 6, 4, 2, 10, 3, 6, 4, 6, 2, 8, 4, 8, 4, 4, 2, 12, 2, 4, 6, 7, 4, 8, 2, 6, 4, 8, 2, 12, 2, 4, 6, 6, 4, 8, 2, 10, 5, 4, 2, 12, 4, 4, 4, 8, 2, 12, 4, 6, 4, 4, 4, 12, 2, 6, 6, 9, 2, 8, 2, 8, 8, 4, 2, 12, 2, 8, 4, 10, 2, 8, 4, 6, 6, 4, 4, 16, 3, 4, 4, 6, 4, 12, 2, 8, 4, 8, 2, 12, 4, 4, 8, 8, 2, 8, 2, 12, 4, 4, 4, 15, 4, 4, 6, 6, 2, 12, 2, 8, 6, 8, 4, 12, 2, 4, 4, 12, 4, 10, 2, 6, 8, 4, 2, 16, 3, 8, 6, 6, 2, 8, 6, 10, 4, 4, 2, 18, 2, 8, 4, 8, 4, 8, 4, 6, 8, 8, 2, 14, 2, 4, 8, 9, 2, 12, 2, 12, 4, 4, 4, 12, 4, 4, 6, 10, 4, 16, 2, 6, 4, 4, 4, 16, 4, 4, 4, 12, 4, 8, 2, 12, 9, 4, 2, 12, 2, 8, 8, 8, 2, 12, 4, 6, 4, 8, 2, 20, 2, 6, 6, 6, 6, 8, 4, 8, 4, 8, 2, 18, 4, 4, 8, 9, 2, 8, 4, 12, 6, 4, 2, 16, 4, 8, 4, 6, 2, 16, 2, 10, 8, 4, 6, 12, 2, 4, 6, 16, 2, 8, 2, 6, 8, 8, 4, 18, 3, 8, 4, 6, 2, 12, 4, 8, 8, 4, 4, 18, 4, 4, 4, 10, 4, 12, 2, 12, 4, 8, 2, 16, 2, 4, 12, 6, 2, 8, 4, 14, 4, 8, 4, 15, 6, 4, 4, 8, 4, 16, 2, 6, 6, 4, 4, 20, 2, 6, 4, 12, 4, 12, 4, 8, 8, 4, 2, 12, 2, 12, 8, 12, 2, 8, 4, 6, 8, 4, 2, 24, 3, 4, 6, 12, 4, 8, 2, 10, 6, 8, 4, 12, 2, 8, 8, 8, 4, 16, 2, 12, 4, 4, 2, 16, 8, 4, 6, 6, 2, 16, 4, 12, 4, 4, 4, 18, 2, 4, 8, 15, 2, 8, 4, 6, 10, 8, 4, 16, 2, 8, 4, 6, 4, 12, 4, 12, 4, 8, 2, 24, 2, 4, 6, 8, 6, 8, 4, 6, 8, 8, 2, 20, 2, 8, 8, 6, 4, 8, 2, 16, 9, 8, 2, 12, 4, 4, 4, 14, 2, 18, 4, 6, 4, 4, 8, 16, 2, 4, 8, 12, 2, 16, 2, 10, 8, 4, 2, 18, 4, 8, 4, 8, 4, 8, 6, 12, 6, 4, 2, 24, 4, 4, 8, 9, 4, 12, 2, 8, 4, 12, 2, 12, 4, 8, 12, 10, 4, 8, 2, 12, 4, 4, 2, 24, 4, 8, 6, 6, 2, 16, 4, 10, 8, 4, 4, 12, 4, 8, 4, 16, 2, 12, 2, 6, 12, 4, 4, 20, 3, 8, 6, 12, 4, 8, 4, 8, 4, 4, 6, 24, 2, 4, 4, 12, 4, 16, 2, 6, 6, 12, 4, 16, 4, 4, 8, 6, 2, 12, 4, 20, 8, 4, 2, 12, 4, 4, 10, 8, 2, 16, 2, 12, 4, 8, 6, 21, 2, 6, 4, 12, 4, 8, 4, 8, 12, 4, 2, 18, 4, 8, 4, 10, 2, 16, 8, 6, 4, 8, 2, 24, 2, 8, 6, 6, 6, 8, 2, 12, 8, 8, 4, 18, 2, 4, 8, 16, 2, 8, 2, 12, 8, 4, 4, 20, 5, 4, 8, 6, 4, 24, 2, 8, 4, 4, 4, 12, 6, 8, 6, 16, 2, 8, 2, 12, 8, 8, 2, 20, 4, 12, 8, 6, 2, 8, 4, 10, 6, 8, 2, 24, 2, 4, 8, 8, 8, 12, 4, 6, 4, 8, 4, 24, 2, 4, 12, 9, 2, 8, 4, 16, 4, 8, 2, 18, 4, 8, 4, 10, 4, 16, 2, 6, 12, 4, 4, 16, 4, 4, 4, 18, 2, 16, 4, 14, 8, 4, 4, 12, 2, 8, 6, 8, 4, 16, 8, 6, 4, 4, 2, 30, 4, 6, 4, 6, 6, 12, 2, 16, 7, 8, 4, 12, 2, 4, 12, 12, 4, 12, 2, 12, 8, 8, 2, 16, 4, 4, 6, 12, 4, 16, 2, 10, 4, 8, 4, 24, 2, 4, 8, 16, 2, 8, 4, 6, 12, 4, 4, 18, 2, 16, 4, 6, 2, 12, 6, 8, 8, 4, 4, 24, 4, 8, 8, 15, 4, 8, 2, 6, 4, 8, 4, 24, 4, 4, 8, 6, 2, 16, 4, 18, 6, 4, 4, 12, 8, 8, 4, 8, 2, 20, 2, 12, 4, 8, 4, 20, 4, 4, 12, 12, 2, 8, 2, 8, 12, 8, 2, 18, 2, 8, 4, 14, 6, 8, 4, 12, 8, 4, 2, 32, 3, 4, 4, 6, 6, 12, 6, 10, 4, 12, 4, 12, 2, 8, 12, 8, 2, 16, 2, 12, 8, 4, 2, 24, 4, 4, 6, 12, 4, 16, 4, 8, 6, 8, 8, 12, 2, 4, 4, 20, 2, 18, 2, 12, 8, 4, 2, 16, 4, 8, 10, 6, 4, 8, 4, 16, 8, 4, 4, 27, 4, 8, 8, 8, 4, 8, 2, 6, 6, 16, 2, 20, 4, 4, 8, 6, 4, 16, 2, 16, 4, 4, 4, 24, 6, 4, 6, 12, 2, 16, 6, 6, 4, 4, 8, 24, 2, 8, 4, 12, 2, 8, 4, 10, 16, 8, 2, 12, 4, 12, 4, 16, 2, 12, 4, 6, 8, 4, 4, 28, 3, 8, 6, 6, 4, 16, 2, 12, 8, 8, 2, 18, 4, 4, 12, 10, 2, 8, 4, 18, 6, 4, 2, 16, 4, 8, 8, 12, 4, 24, 2, 12, 4, 8, 4, 12, 2, 4, 8, 16};
 
@@ -1014,12 +1012,12 @@ const int dividers_map[1001][32] = {
   { 1, 2, 4, 5, 8, 10, 20, 25, 40, 50, 100, 125, 200, 250, 500, 1000 }
 };
 
-int max_consequtive_subsum_from_raw(const int raw[100], const int length_of_raw, const int length_of_subsequence) {
-  int max_sum = 0;
+long long max_consequtive_subsum_from_raw(const long long raw[100], const int length_of_raw, const int length_of_subsequence) {
+  long long max_sum = 0;
   for (int i = 0; i < length_of_subsequence; ++i) {
     max_sum += raw[i];
   }
-  int current_sum = max_sum;
+  long long current_sum = max_sum;
   for (int i = length_of_subsequence; i < length_of_raw; ++i) {
     current_sum = current_sum + raw[i] - raw[i - length_of_subsequence];
     max_sum = max(max_sum, current_sum);
@@ -1027,8 +1025,8 @@ int max_consequtive_subsum_from_raw(const int raw[100], const int length_of_raw,
   return max_sum;
 }
 
-void put_max_fix_sized_submatrix_sum_to_value(const int matrix[1000][100], const int M, const int N, const int m, const int n, int &max_sum) {
-  int sum_of_m_columns[100] = {};
+void put_max_fix_sized_submatrix_sum_to_value(const long long matrix[1000][100], const int M, const int N, const int m, const int n, long long &max_sum) {
+  long long sum_of_m_columns[100] = {};
   for (int i = 0; i < m; ++i) {
     for (int j = 0; j < N; ++j) {  
       sum_of_m_columns[j] += matrix[i][j];
@@ -1048,33 +1046,18 @@ void put_max_fix_sized_submatrix_sum_to_value(const int matrix[1000][100], const
   return;
 }
 
-const bool file_input = true;
-
 int main() {
     int K, M, N;
-    int D[1000][100];
+    long long D[1000][100];
 
-    if (file_input) {
-        ifstream input_file;
-        input_file.open ("input.txt");
-        input_file >> K >> M >> N;
-
-        for (int i = 0; i < M; ++i) {
-            for (int j = 0; j < N; ++j) {
-                input_file >> D[i][j];
-            }
-        }
-    } else {
-        cin >> K >> M >> N;
-
-        for (int i = 0; i < M; ++i) {
-            for (int j = 0; j < N; ++j) {
-                cin >> D[i][j];
-            }
+    cin >> K >> M >> N;
+    for (int i = 0; i < M; ++i) {
+        for (int j = 0; j < N; ++j) {
+            cin >> D[i][j];
         }
     }
-  
-    int max_sum = D[0][0];
+
+    long long max_sum = D[0][0];
 
     for (int k = 1; k <= K; ++k) {
         for (int i = 0; i < number_of_dividers[k]; ++i) {
